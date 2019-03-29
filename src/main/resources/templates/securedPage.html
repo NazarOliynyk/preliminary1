@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>Secured Page</title>
+</head>
+<body>
+<h1> Page just to try security access </h1>
+<h3>You got in as <p th:text="${className}"></p>
+    <!--<p th:text="${username}"></p>-->
+    <p th:text="${name}"></p>
+</h3>
+
+
+<h2>Add a new contact to your contact list and take a look into the database: </h2>
+
+
+    <h1> Adding a new contact</h1>
+
+<form id="saveContact">
+
+    <div><label> Login : <input id="className" type="text" name="className" th:value="${className}"/> </label></div>
+    <div><label> Password: <input id="username" type="text" name="username" th:value="${username}"/> </label></div>
+    <div><label> Client name: <input id="contactName" type="text" name="contactName" placeholder="contactName"/> </label></div>
+    <div><label> Client age: <input id="email" type="email" name="email" placeholder="email"/> </label></div>
+    <button id="btn">Save</button>
+
+</form>
+
+    <div><button id="btn1">Show all Contacts </button>
+
+    </div>
+
+    <div class="target">The list of Contacts</div>
+
+<h2> To logout : </h2>
+<form th:action="@{/logout}" method="POST">
+    <input type="submit" value="Log out"/>
+
+</form>
+
+<script>
+    $('#btn').click(function () {
+        var $className = $('#className').val();
+        var $username = $('#username').val();
+        var $contactName = $('#contactName').val();
+        var $email = $('#email').val();
+        console.log($username, " ", $className, " ", $contactName, " ", $email);
+        $.ajax({
+            url:'/saveContact',
+            type:'POST',
+            data: new FormData($('#saveContact')[0]),
+            processData: false,
+            contentType: false,
+            cache: false
+        });
+    });
+
+</script>
+
+    <!--<script>-->
+        <!--$('#btn').click(function () {-->
+           <!--// var $className = $('#className').val();-->
+           <!--// var $username = $('#username').val();-->
+            <!--var $contactName = $('#contactName').val();-->
+            <!--var $email = $('#email').val();-->
+<!--//            var $avatar = $('#avatar').val();-->
+            <!--console.log($className, " ",$username, " ", $contactName);-->
+           <!--// let className = {className: $className};-->
+            <!--//let username = {username: $username};-->
+            <!--let contact = {contactName:$contactName, email:$email};-->
+            <!--//  it works with rest controllers and it does not need to restart the whole page-->
+            <!--$.ajax({-->
+                <!--url:'/saveContact',-->
+                <!--type:'POST',-->
+               <!--// data:JSON.stringify(username),-->
+                <!--data:JSON.stringify(-->
+                        <!--//username,-->
+                        <!--contact),-->
+                <!--contentType:'application/json'-->
+            <!--});-->
+        <!--});-->
+        <!--$('#btn1').click(function (){-->
+            <!--$('.target').empty();-->
+            <!--$.ajax({-->
+                <!--url:'/showContact',-->
+                <!--type:'GET',-->
+                <!--//data:JSON.stringify(contact),-->
+                <!--contentType:'application/json',-->
+                <!--// the following takes info from controller, results is an arbitrary name-->
+                <!--success: function (results) {-->
+                    <!--console.log(results);-->
+                    <!--for(const contact of results){-->
+                        <!--let data = `${contact.id} ${'.'} ${contact.name} ${', '} ${contact.email}`;-->
+                        <!--let $div = $('<div/>', {class: 'xxx', text: data});-->
+                        <!--$('.target').append($div);-->
+                    <!--}-->
+                <!--}-->
+            <!--});-->
+        <!--});-->
+    <!--</script>-->
+
+
+
+</body>
+</html>

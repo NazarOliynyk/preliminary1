@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!--press Alt+Enter and download library-->
+    <!--press Ctrl+Alt+S to call Settings, print lib and checkbox jquery-->
+    <title>CLIENTS REGISTARTION</title>
+</head>
+<body>
+<h3> Register a new Client: </h3>
+
+<form id="saveClient">
+
+    <div><label> Login : <input id="username" type="text" name="username" placeholder="login"/> </label></div>
+    <div><label> Password: <input id="password" type="password" name="password" placeholder="password"/> </label></div>
+    <div><label> Client name: <input id="clientName" type="text" name="clientName" placeholder="clientName"/> </label></div>
+    <div><label> Client age: <input id="age" type="number" name="age" placeholder="age"/> </label></div>
+    <button id="btnSaveClient">Sign In</button>
+
+</form>
+
+<div id="representer"></div>
+
+<h4>Or, in case you have already got an accout, log in: </h4>
+
+<form action="/login" method="get">
+
+    <input type="submit" name="" placeholder="" value="Go To Logination Page"/>
+
+</form>
+
+<h4>Or, in case you are already logged in, go to a page : </h4>
+<form action="/goToSecuredPage" method="get">
+
+    <input type="submit" name="" placeholder="" value="Go To Secured Page"/>
+
+</form>
+<script>
+    $('#btnSaveClient').click(function () {
+        var $username = $('#username').val();
+        var $password = $('#password').val();
+        var $clientName = $('#clientName').val();
+        var $age = $('#age').val();
+        $("#representer").empty();
+        console.log($username, " ", $password);
+        let client = {username:$username, password:$password,
+            clientName:$clientName, age:$age};
+        //  it works with rest controllers and it does not need to restart the whole page
+        $.ajax({
+            url:'/saveClient',
+            type:'POST',
+            contentType:'application/json',
+            data:JSON.stringify(client),
+
+            success: function (client) {
+
+                console.log(client.toString());
+
+                    let $div= $('<div/>', {
+                        text: client.clientName+
+                        ' '+client.age
+                    })
+                    $("#representer").append($div);
+
+
+            },
+            error: function (err) {
+                console.log('error: '+err);
+            }
+        });
+    });
+
+</script>
+
+</body>
+</html>

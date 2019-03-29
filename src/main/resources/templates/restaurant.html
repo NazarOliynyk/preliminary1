@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <title>RESTAURANTS REGISTARTION</title>
+</head>
+<body>
+<h3> Register a new Restaurant: </h3>
+
+<form id="saveRestaurant">
+
+    <div><label> Login : <input id="username" type="text" name="username" placeholder="login"/> </label></div>
+    <div><label> Password: <input id="password" type="password" name="password" placeholder="password"/> </label></div>
+    <div><label> Restaurant name: <input id="restaurantName" type="text" name="restaurantName" placeholder="restaurantName"/> </label></div>
+    <div><label> Phone number: <input id="phoneNumber" type="text" name="phoneNumber" placeholder="phoneNumber"/> </label></div>
+    <button id="btnSaveRestaurant">Sign In</button>
+
+</form>
+
+<h4>Or, in case you have already got an accout, log in: </h4>
+
+<form action="/login" method="get">
+
+    <input type="submit" name="" placeholder="" value="Go To Logination Page"/>
+
+</form>
+
+<h4>Or, in case you are already logged in, go to a page : </h4>
+<form action="/goToSecuredPage" method="get">
+
+    <input type="submit" name="" placeholder="" value="Go To Secured Page"/>
+
+</form>
+
+
+<script>
+    $('#btnSaveRestaurant').click(function () {
+        var $username = $('#username').val();
+        var $password = $('#password').val();
+        var $restaurantName = $('#restaurantName').val();
+        var $phoneNumber = $('#phoneNumber').val();
+        console.log($username, " ", $password);
+        let restaurant = {username:$username, password:$password,
+            restaurantName:$restaurantName, phoneNumber:$phoneNumber};
+        //  it works with rest controllers and it does not need to restart the whole page
+        $.ajax({
+            url:'/saveRestaurant',
+            type:'POST',
+            data:JSON.stringify(restaurant),
+            contentType:'application/json'
+        });
+    });
+
+</script>
+
+
+
+</body>
+</html>
