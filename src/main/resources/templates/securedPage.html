@@ -20,15 +20,17 @@
 
 <form id="saveContact">
 
-    <div><label> Login : <input id="className" type="text" name="className" th:value="${className}"/> </label></div>
-    <div><label> Password: <input id="username" type="text" name="username" th:value="${username}"/> </label></div>
-    <div><label> Client name: <input id="contactName" type="text" name="contactName" placeholder="contactName"/> </label></div>
-    <div><label> Client age: <input id="email" type="email" name="email" placeholder="email"/> </label></div>
-    <button id="btn">Save</button>
+    <div><label> Class Name : <input id="className" type="text" name="className" th:value="${className}"/> </label></div>
+    <div><label> User Login: <input id="username" type="text" name="username" th:value="${username}"/> </label></div>
+    <div><label> Contact name: <input id="contactName" type="text" name="contactName" placeholder="contactName"/> </label></div>
+    <div><label> Contact email: <input id="email" type="email" name="email" placeholder="email"/> </label></div>
+
 
 </form>
 
-    <div><button id="btn1">Show all Contacts </button>
+    <div>
+        <button id="btn">Save</button>
+        <button id="btn1">Show all Contacts </button>
 
     </div>
 
@@ -42,11 +44,11 @@
 
 <script>
     $('#btn').click(function () {
-        var $className = $('#className').val();
-        var $username = $('#username').val();
-        var $contactName = $('#contactName').val();
-        var $email = $('#email').val();
-        console.log($username, " ", $className, " ", $contactName, " ", $email);
+//        var $className = $('#className').val();
+//        var $username = $('#username').val();
+//        var $contactName = $('#contactName').val();
+//        var $email = $('#email').val();
+//        console.log($username, " ", $className, " ", $contactName, " ", $email);
         $.ajax({
             url:'/saveContact',
             type:'POST',
@@ -54,6 +56,29 @@
             processData: false,
             contentType: false,
             cache: false
+        });
+    });
+    $('#btn1').click(function (){
+        $('.target').empty();
+        $.ajax({
+            url:'/showContact',
+            type:'POST',
+            data: new FormData($('#saveContact')[0]),
+            processData: false,
+            contentType: false,
+            cache: false,
+            //data:JSON.stringify(contact),
+            //contentType:'application/json',
+            // the following takes info from controller, results is an arbitrary name
+            success: function (results) {
+                console.log(results);
+                for(const contact of results){
+                    let data = `${contact.id} ${'.'} ${contact.contactName} ${', '} ${contact.email}`;
+
+                    let $div = $('<div/>', {class: 'xxx', text: data});
+                    $('.target').append($div);
+                }
+            }
         });
     });
 

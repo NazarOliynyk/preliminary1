@@ -16,11 +16,12 @@
     <div><label> Password: <input id="password" type="password" name="password" placeholder="password"/> </label></div>
     <div><label> Client name: <input id="clientName" type="text" name="clientName" placeholder="clientName"/> </label></div>
     <div><label> Client age: <input id="age" type="number" name="age" placeholder="age"/> </label></div>
-    <button id="btnSaveClient">Sign In</button>
 
 </form>
 
-<div id="representer"></div>
+<button id="btnSaveClient">Sign In</button>
+
+<div id="representer">RESULT of Saving a Client</div>
 
 <h4>Or, in case you have already got an accout, log in: </h4>
 
@@ -53,14 +54,14 @@
             contentType:'application/json',
             data:JSON.stringify(client),
 
-            success: function (client) {
-
-                console.log(client.toString());
-
-                    let $div= $('<div/>', {
-                        text: client.clientName+
-                        ' '+client.age
-                    })
+            success: function (results) {
+//                    let $div= $('<div/>', {
+//                        text: 'CLIENT-  '+ results.clientName+
+//                        ' '+results.age+' was SAVED!'
+//                    });
+                let $div= $('<div/>', {
+                    text: 'CLIENT-  '+ results
+                });
                     $("#representer").append($div);
 
 

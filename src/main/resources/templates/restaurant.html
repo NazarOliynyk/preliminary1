@@ -14,9 +14,13 @@
     <div><label> Password: <input id="password" type="password" name="password" placeholder="password"/> </label></div>
     <div><label> Restaurant name: <input id="restaurantName" type="text" name="restaurantName" placeholder="restaurantName"/> </label></div>
     <div><label> Phone number: <input id="phoneNumber" type="text" name="phoneNumber" placeholder="phoneNumber"/> </label></div>
-    <button id="btnSaveRestaurant">Sign In</button>
+
 
 </form>
+
+<button id="btnSaveRestaurant">Sign In</button>
+
+<div id="representer">RESULT of Saving a Restaurant</div>
 
 <h4>Or, in case you have already got an accout, log in: </h4>
 
@@ -48,7 +52,24 @@
             url:'/saveRestaurant',
             type:'POST',
             data:JSON.stringify(restaurant),
-            contentType:'application/json'
+            contentType:'application/json',
+            success: function (results) {
+
+//                let $div= $('<div/>', {
+//                    text: 'RESTAURANT-  '+ results.restaurantName+
+//                    ' '+results.phoneNumber+' was SAVED!'
+//                });
+                let $div= $('<div/>', {
+                    text: 'RESTAURANT-  '+ results
+                });
+
+                $("#representer").append($div);
+
+
+            },
+            error: function (err) {
+                console.log('error: '+err);
+            }
         });
     });
 

@@ -1,5 +1,6 @@
 package oktenweb.models;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

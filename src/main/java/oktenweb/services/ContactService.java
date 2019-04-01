@@ -29,4 +29,5 @@ public class ContactService {
 
         return contactDAO.getOne(id);
     }
+
 }

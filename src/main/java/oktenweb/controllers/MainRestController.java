@@ -1,5 +1,6 @@
 package oktenweb.controllers;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import oktenweb.dao.UserDAO;
 import oktenweb.models.Client;
 import oktenweb.models.Contact;
@@ -8,6 +9,9 @@ import oktenweb.models.User;
 import oktenweb.services.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RestController
@@ -44,10 +48,35 @@ public class MainRestController {
     }
 
 
-//    @GetMapping("/showContact")
-//    public List<Contact> showContact(){
-//        List<Contact> results = contactService.findAll();
-//        return results;
-//    }
+    @PostMapping("/showContact")
+    public List<Contact> showContact(@RequestParam("username") String username){
+        System.out.println("username.toString(): "+username.toString());
+
+        List<Contact> results = new ArrayList<>();
+        User userChosen = new User();
+
+        List<User> users = userDAO.findAll();
+        for (User user : users) {
+            if(user.getUsername().equals(username)){
+                userChosen = user;
+                System.out.println(userChosen.toString());
+            }
+        }
+        if(userChosen.getClass().equals(oktenweb.models.Client.class)){
+            Client client = (Client) userChosen;
+            System.out.println(client.toString());
+            results = client.getClientContacts();
+        }else if (userChosen.getClass().equals(oktenweb.models.Restaurant.class)){
+            Restaurant restaurant = (Restaurant) userChosen;
+            System.out.println(restaurant.toString());
+            results = restaurant.getRestaurantContacts();
+        }
+
+        for (Contact result : results) {
+            System.out.println(result.toString());
+        }
+
+        return results;
+    }
 
 }

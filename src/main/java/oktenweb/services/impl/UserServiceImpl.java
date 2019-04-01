@@ -23,7 +23,6 @@ public class UserServiceImpl implements UserService {
         if(user!=null) userDAO.save(user);
     }
 
-
     @Override
     public List<User> findAll() {
         return null;
