@@ -4,6 +4,10 @@
     <meta charset="UTF-8"/>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <title>Secured Page</title>
+    <style>
+        img{width: 100px;
+        height: 100px}
+    </style>
 </head>
 <body>
 <h1> Page just to try security access </h1>
@@ -24,7 +28,7 @@
     <div><label> User Login: <input id="username" type="text" name="username" th:value="${username}"/> </label></div>
     <div><label> Contact name: <input id="contactName" type="text" name="contactName" placeholder="contactName"/> </label></div>
     <div><label> Contact email: <input id="email" type="email" name="email" placeholder="email"/> </label></div>
-
+    <div><label> Contact avatar: <input id="image" type="file" name="image" placeholder="image"/> </label></div>
 
 </form>
 
@@ -64,6 +68,7 @@
             url:'/showContact',
             type:'POST',
             data: new FormData($('#saveContact')[0]),
+            enctype: 'multipart/form-data',
             processData: false,
             contentType: false,
             cache: false,
@@ -73,10 +78,12 @@
             success: function (results) {
                 console.log(results);
                 for(const contact of results){
-                    let data = `${contact.id} ${'.'} ${contact.contactName} ${', '} ${contact.email}`;
+                    let data = `${contact.id} ${'. '} ${contact.contactName} ${', '} ${contact.email} ${', '} ${contact.avatar}`;
 
                     let $div = $('<div/>', {class: 'xxx', text: data});
+                    let $image = $('<img/>', {src: contact.avatar});
                     $('.target').append($div);
+                    $('.target').append($image);
                 }
             }
         });

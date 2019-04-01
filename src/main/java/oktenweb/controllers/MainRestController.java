@@ -1,6 +1,7 @@
 package oktenweb.controllers;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 import oktenweb.dao.UserDAO;
 import oktenweb.models.Client;
 import oktenweb.models.Contact;
@@ -9,7 +10,10 @@ import oktenweb.models.User;
 import oktenweb.services.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,17 +26,66 @@ public class MainRestController {
 
     @Autowired
     private ContactService contactService;
+//
+//    @PostMapping("/saveContact")
+//    public User saveContact(
+//            @RequestParam("className") String className,
+//            @RequestParam("username") String username,
+//            @RequestParam("contactName") String contactName,
+//            @RequestParam("email") String email){
+//        Restaurant restaurant;
+//        Client client;
+//        User user = new User();
+//        Contact contact = new Contact(contactName, email);
+//        if(className.equals("CLIENT")){
+//            client = (Client) userDAO.findByUsername(username);
+//            contact.setClient(client);
+//            contactService.save(contact);
+//            user= client;
+//        }else if (className.equals("RESTAURANT")){
+//            restaurant = (Restaurant) userDAO.findByUsername(username);
+//            contact.setRestaurant(restaurant);
+//            contactService.save(contact);
+//            user= restaurant;
+//        }
+//        return user;
+//    }
 
     @PostMapping("/saveContact")
-    public User saveContact(
+    public
+    @ResponseBody
+        // allows to not return template
+    User upload(
             @RequestParam("className") String className,
             @RequestParam("username") String username,
             @RequestParam("contactName") String contactName,
-            @RequestParam("email") String email){
+            @RequestParam("email") String email,
+            @RequestParam("image") MultipartFile image
+    ) throws MessagingException {
+
+        Contact contact = new Contact(contactName, email);
+        contact.setAvatar(image.getOriginalFilename());
+//        String path = System.getProperty("user.home")
+//                + File.separator
+//                +"images"
+//                +File.separator
+//                +image.getOriginalFilename();
+//        String path = "D:\\JAVA_ADVANCED\\SPRING\\preliminary1\\src\\main\\resources\\static"
+//                +File.separator
+//                +image.getOriginalFilename();
+
+        String path =  File.separator
+                +image.getOriginalFilename();
+        try {
+            image.transferTo(new File(path));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        User user = new User();
         Restaurant restaurant;
         Client client;
-        User user = new User();
-        Contact contact = new Contact(contactName, email);
+
         if(className.equals("CLIENT")){
             client = (Client) userDAO.findByUsername(username);
             contact.setClient(client);
