@@ -22,7 +22,7 @@
 
     <h1> Adding a new contact</h1>
 
-<form id="saveContact">
+<form id="saveContact" enctype="multipart/form-data">
 
     <div><label> Class Name : <input id="className" type="text" name="className" th:value="${className}"/> </label></div>
     <div><label> User Login: <input id="username" type="text" name="username" th:value="${username}"/> </label></div>
@@ -65,7 +65,7 @@
     $('#btn1').click(function (){
         $('.target').empty();
         $.ajax({
-            url:'/showContact',
+            url:'/showContacts',
             type:'POST',
             data: new FormData($('#saveContact')[0]),
             enctype: 'multipart/form-data',
@@ -81,7 +81,7 @@
                     let data = `${contact.id} ${'. '} ${contact.contactName} ${', '} ${contact.email} ${', '} ${contact.avatar}`;
 
                     let $div = $('<div/>', {class: 'xxx', text: data});
-                    let $image = $('<img/>', {src: contact.avatar});
+                    let $image = $('<img/>', {src: '/ava/'+contact.avatar});
                     $('.target').append($div);
                     $('.target').append($image);
                 }

@@ -20,8 +20,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry resourceHandlerRegistry) {
 
-        String pathToFolder = System.getProperty("user.home")+ File.separator + "images" +File.separator;
+        String pathToFolder = "D:\\FotoSpringPreliminary1"+File.separator;
         //String pathToFolder2 = System.getProperty("user.home")+ File.separator + "cssFiles" +File.separator;
+
+//        this "/ava/**" is used in the form to display the foto
 
         resourceHandlerRegistry.addResourceHandler("/ava/**").addResourceLocations("file:///"+pathToFolder);
        // resourceHandlerRegistry.addResourceHandler("/css/**").addResourceLocations("file:///"+pathToFolder2);

@@ -2,6 +2,7 @@ package oktenweb.controllers;
 
 
 import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
+import oktenweb.components.ShowContactsComponent;
 import oktenweb.dao.UserDAO;
 import oktenweb.models.Client;
 import oktenweb.models.Contact;
@@ -64,7 +65,7 @@ public class MainRestController {
     ) throws MessagingException {
 
         Contact contact = new Contact(contactName, email);
-        contact.setAvatar(image.getOriginalFilename());
+
 //        String path = System.getProperty("user.home")
 //                + File.separator
 //                +"images"
@@ -74,14 +75,15 @@ public class MainRestController {
 //                +File.separator
 //                +image.getOriginalFilename();
 
-        String path =  File.separator
+        String path =  "D:\\FotoSpringPreliminary1"+File.separator
                 +image.getOriginalFilename();
+
         try {
             image.transferTo(new File(path));
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        contact.setAvatar(image.getOriginalFilename());
         User user = new User();
         Restaurant restaurant;
         Client client;
@@ -101,35 +103,42 @@ public class MainRestController {
     }
 
 
-    @PostMapping("/showContact")
+//    @PostMapping("/showContacts")
+//    public List<Contact> showContact(@RequestParam("username") String username){
+//        System.out.println("username.toString(): "+username.toString());
+//
+//        List<Contact> results = new ArrayList<>();
+//        User userChosen = new User();
+//
+//        List<User> users = userDAO.findAll();
+//        for (User user : users) {
+//            if(user.getUsername().equals(username)){
+//                userChosen = user;
+//                System.out.println(userChosen.toString());
+//            }
+//        }
+//        if(userChosen.getClass().equals(oktenweb.models.Client.class)){
+//            Client client = (Client) userChosen;
+//            System.out.println(client.toString());
+//            results = client.getClientContacts();
+//        }else if (userChosen.getClass().equals(oktenweb.models.Restaurant.class)){
+//            Restaurant restaurant = (Restaurant) userChosen;
+//            System.out.println(restaurant.toString());
+//            results = restaurant.getRestaurantContacts();
+//        }
+//
+//        for (Contact result : results) {
+//            System.out.println(result.toString());
+//        }
+//
+//        return results;
+//    }
+
+    @Autowired
+    ShowContactsComponent showContactsComponent;
+    @PostMapping("/showContacts")
     public List<Contact> showContact(@RequestParam("username") String username){
-        System.out.println("username.toString(): "+username.toString());
-
-        List<Contact> results = new ArrayList<>();
-        User userChosen = new User();
-
-        List<User> users = userDAO.findAll();
-        for (User user : users) {
-            if(user.getUsername().equals(username)){
-                userChosen = user;
-                System.out.println(userChosen.toString());
-            }
-        }
-        if(userChosen.getClass().equals(oktenweb.models.Client.class)){
-            Client client = (Client) userChosen;
-            System.out.println(client.toString());
-            results = client.getClientContacts();
-        }else if (userChosen.getClass().equals(oktenweb.models.Restaurant.class)){
-            Restaurant restaurant = (Restaurant) userChosen;
-            System.out.println(restaurant.toString());
-            results = restaurant.getRestaurantContacts();
-        }
-
-        for (Contact result : results) {
-            System.out.println(result.toString());
-        }
-
-        return results;
+        return showContactsComponent.getContacts(username);
     }
 
 }

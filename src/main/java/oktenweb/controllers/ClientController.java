@@ -41,19 +41,30 @@ public class ClientController {
 //        return (Client)userDAO.findByUsername(client.getUsername());
 //    }
 
+//    @PostMapping("/saveClient")
+//    public String saveRestaurant(@RequestBody Client client, Model model) {
+//        client.setPassword(passwordEncoder.encode(client.getPassword()));
+//        try {
+//            userService.save(client);
+//        }catch (Exception e){
+//            System.out.println(e);
+//            return client.getUsername()+" has not been saved";
+//        }
+//        return userDAO.findByUsername(client.getUsername()).getUsername()+" has been saved successfully";
+//    }
+
     @PostMapping("/saveClient")
     public String saveRestaurant(@RequestBody Client client,
                                  Model model) {
 
-        System.out.println(client.toString());
-        client.setPassword(passwordEncoder.encode(client.getPassword()));
-        try {
-           // userService.save(client);
+        if(!userDAO.existsByUsername(client.getUsername())){
+            System.out.println(client.toString());
+            client.setPassword(passwordEncoder.encode(client.getPassword()));
             userServiceImpl.save(client);
-        }catch (Exception e){
-            System.out.println(e);
+            return userDAO.findByUsername(client.getUsername()).getUsername()+" has been saved successfully";
+        }else {
             return client.getUsername()+" has not been saved";
         }
-        return userDAO.findByUsername(client.getUsername()).getUsername()+" has been saved successfully";
+
     }
 }
