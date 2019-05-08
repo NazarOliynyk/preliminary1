@@ -7,11 +7,13 @@ import oktenweb.models.Restaurant;
 import oktenweb.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+//@Component
+@Service
 public class ShowContactsComponent {
 
     @Autowired

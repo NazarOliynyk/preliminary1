@@ -4,6 +4,7 @@ import oktenweb.components.ResponseSuccessURL;
 import oktenweb.components.SuccessURLComponent;
 import oktenweb.dao.UserDAO;
 import oktenweb.models.Client;
+import oktenweb.models.Contact;
 import oktenweb.models.Restaurant;
 import oktenweb.models.User;
 import oktenweb.services.ContactService;
@@ -13,7 +14,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class MainController {
@@ -76,6 +87,42 @@ public class MainController {
         model.addAttribute("className", responseSuccessURL.getClassName());
         model.addAttribute("username", responseSuccessURL.getUsername());
         model.addAttribute("name", responseSuccessURL.getName());
+        return "securedPage";
+    }
+
+    @Autowired
+    UserDAO userDAO;
+
+    @PostMapping("/deleteUser")
+    public String deleteUser(@RequestParam int id){
+
+        String path =  "D:\\FotoSpringPreliminary1"+ File.separator;
+
+        User user = userDAO.findOne(id);
+        Restaurant restaurant;
+        Client client;
+        List<Contact> contacts = new ArrayList<>();
+
+
+        if (user.getClass().equals(Restaurant.class)){
+            restaurant = (Restaurant) user;
+            contacts = restaurant.getRestaurantContacts();
+        }else if (user.getClass().equals(Client.class)){
+            client = (Client) user;
+            contacts = client.getClientContacts();
+        }
+        for (Contact contact : contacts) {
+
+            Path pathToFile = FileSystems.getDefault().getPath(path + contact.getAvatar());
+            try {
+                Files.delete(pathToFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return "Image was not deleted";
+            }
+        }
+
+        userDAO.delete(id);
         return "securedPage";
     }
 }

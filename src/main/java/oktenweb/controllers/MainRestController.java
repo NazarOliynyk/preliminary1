@@ -141,4 +141,16 @@ public class MainRestController {
         return showContactsComponent.getContacts(username);
     }
 
+    // the next Controller is just to try <select> in ajax
+
+    @PostMapping("/saveTheName")
+    public String saveTheName(
+          @RequestParam("contactName}") String contactName
+           // @RequestBody Contact contact
+    ){
+        //System.out.println("contact.toString(): "+contact.toString());
+        System.out.println("contactName: "+contactName);
+        return "";
+    }
+
 }

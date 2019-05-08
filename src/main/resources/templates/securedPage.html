@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" >
 <head>
     <meta charset="UTF-8"/>
+    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <title>Secured Page</title>
     <style>
@@ -11,6 +12,13 @@
 </head>
 <body>
 <h1> Page just to try security access </h1>
+
+<form action="/deleteUser" method="post">
+    <h2>Try deleting a user:</h2>
+    <input type="number" name="id" placeholder="id"/>
+    <input type="submit" name="" placeholder="" value="Delete a user with this id"/>
+</form>
+
 <h3>You got in as <p th:text="${className}"></p>
     <!--<p th:text="${username}"></p>-->
     <p th:text="${name}"></p>
@@ -40,6 +48,13 @@
 
     <div class="target">The list of Contacts</div>
 
+    <form class="target1" id="target1"> </form>
+
+    <div>
+        <button id="btn2">Save The name </button>
+    </div>
+
+
 <h2> To logout : </h2>
 <form th:action="@{/logout}" method="POST">
     <input type="submit" value="Log out"/>
@@ -64,6 +79,7 @@
     });
     $('#btn1').click(function (){
         $('.target').empty();
+        $('.target1').empty();
         $.ajax({
             url:'/showContacts',
             type:'POST',
@@ -77,17 +93,46 @@
             // the following takes info from controller, results is an arbitrary name
             success: function (results) {
                 console.log(results);
+               // let $contacts = results;
+                let $label = $('<label />', {for: 'ctlJob'});
+                let $select = $('<select />', {id: 'contactName'});
                 for(const contact of results){
                     let data = `${contact.id} ${'. '} ${contact.contactName} ${', '} ${contact.email} ${', '} ${contact.avatar}`;
+
+
+                    let $option =$('<option/>', {  value: contact.contactName, text: contact.contactName});
+                    $select.append($option);
 
                     let $div = $('<div/>', {class: 'xxx', text: data});
                     let $image = $('<img/>', {src: '/ava/'+contact.avatar});
                     $('.target').append($div);
                     $('.target').append($image);
                 }
+                $label.append($select);
+                $('.target1').append($label);
+
             }
         });
     });
+
+    $('#btn2').click(function () {
+
+        var $contactName = $('#contactName ').text();
+       // var $contactName= $( "#contactName option:selected" ).text();
+        let contact = {contactName: $contactName, email: null};
+        console.log('$contactName: '+$contactName);
+        $.ajax({
+            url:'/saveTheName',
+            type:'POST',
+            data: new FormData($('#target1')[0]),
+            processData: false,
+            contentType: false,
+            cache: false
+//            contentType:'application/json',
+//            data:JSON.stringify(contact)
+        });
+    });
+
 
 </script>
 

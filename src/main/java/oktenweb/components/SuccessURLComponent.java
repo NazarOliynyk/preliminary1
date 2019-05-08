@@ -10,9 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
-
+//@Component
+@Service
 public class SuccessURLComponent {
     @Autowired
     UserDAO userDAO;
@@ -35,6 +36,10 @@ public class SuccessURLComponent {
      //   System.out.println("userLogged.toString(): "+userLogged.toString());
       //  System.out.println("userLogged.getClass(): "+userLogged.getClass());
 
+        System.out.println("userLogged.getClass().toString(): "+userLogged.getClass().toString());
+
+        System.out.println(userLogged.getClass().toString().equals("class oktenweb.models.Restaurant"));
+        System.out.println(userLogged.getClass().toString().equals("class oktenweb.models.RestaurantTTT"));
         Restaurant restaurant = new Restaurant();
         Client client = new Client();
         if(auth.getName().equals("admin")){

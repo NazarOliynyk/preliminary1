@@ -54,7 +54,7 @@ public class ClientController {
 //    }
 
     @PostMapping("/saveClient")
-    public String saveRestaurant(@RequestBody Client client,
+    public String saveClient(@RequestBody Client client,
                                  Model model) {
 
         if(!userDAO.existsByUsername(client.getUsername())){
